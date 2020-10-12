@@ -28,7 +28,9 @@ if (!defined('_PS_VERSION_')) {
     exit;
 }
 
-class Orderlist extends Module
+use PrestaShop\PrestaShop\Core\Module\WidgetInterface;
+
+class Orderlist extends Module implements WidgetInterface
 {
     protected $config_form = false;
 
@@ -114,14 +116,22 @@ class Orderlist extends Module
         $this->context->controller->addCSS($this->_path.'/views/css/front.css');
     }
 
+	public function getWidgetVariables($hookName, array $params)
+	{
+		return array(
+			'my_list' => Context::getContext()->link->getModuleLink($this->name, 'my_list'),
+		);
+	}
+
+	public function renderWidget($hookName, array $params)
+	{
+		$this->smarty->assign($this->getWidgetVariables($hookName, $params));
+		return $this->display(dirname(__FILE__), '/views/templates/hook/go_to_orderlist_widget.tpl');
+	}
+
     public function hookDisplayCustomerAccount()
     {
-        $this->context->smarty->assign(
-            [
-                'my_list' => Context::getContext()->link->getModuleLink($this->name, 'my_list'),
-            ]
-        );
-
+	    $this->smarty->assign($this->getWidgetVariables('displayCustomerAccount', array()));
         return $this->display(dirname(__FILE__), '/views/templates/hook/go_to_orderlist.tpl');
     }
 
