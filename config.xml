@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<module>
+	<name>orderlist</name>
+	<displayName><![CDATA[Order List]]></displayName>
+	<version><![CDATA[1.0.0]]></version>
+	<description><![CDATA[Customers can make a list of their favorite products and re-order them.]]></description>
+	<author><![CDATA[Inform-All]]></author>
+	<tab><![CDATA[front_office_features]]></tab>
+	<is_configurable>1</is_configurable>
+	<need_instance>1</need_instance>
+</module>

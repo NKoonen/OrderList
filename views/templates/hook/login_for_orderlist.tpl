@@ -1,0 +1,1 @@
+<a href="{$urls.pages.authentication}"> {l s='Login to use orderlists' mod='orderlist'}</a>

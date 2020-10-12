@@ -1,0 +1,44 @@
+{*
+* 2007-2020 PrestaShop
+*
+* NOTICE OF LICENSE
+*
+* This source file is subject to the Academic Free License (AFL 3.0)
+* that is bundled with this package in the file LICENSE.txt.
+* It is also available through the world-wide-web at this URL:
+* http://opensource.org/licenses/afl-3.0.php
+* If you did not receive a copy of the license and are unable to
+* obtain it through the world-wide-web, please send an email
+* to license@prestashop.com so we can send you a copy immediately.
+*
+* DISCLAIMER
+*
+* Do not edit or add to this file if you wish to upgrade PrestaShop to newer
+* versions in the future. If you wish to customize PrestaShop for your
+* needs please refer to http://www.prestashop.com for more information.
+*
+*  @author    PrestaShop SA <contact@prestashop.com>
+*  @copyright 2007-2020 PrestaShop SA
+*  @license   http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+*  International Registered Trademark & Property of PrestaShop SA
+*}
+
+<div class="panel">
+    <div class="row moduleconfig-header">
+        <div class="col-xs-5 text-right">
+            <img width="75px" src="{$module_dir|escape:'html':'UTF-8'}logo.png"/>
+        </div>
+        <div class="col-xs-7 text-left">
+            <h2>{l s='Order List' mod='vatchecker'}</h2>
+            <h4>{l s='Donations are welcome' mod='orderlist'} <a href="https://www.paypal.com/paypalme/buymecoffee"
+                                                                 target="_blank">here</a></h4>
+        </div>
+    </div>
+    <div class="row moduleconfig-header">
+        <div class="col-xs-12">
+            <center>
+                <h4>{l s='This module lets customer add products in their own order list. The order list can be found on their account page.' mod='orderlist'}</h4>
+            </center>
+        </div>
+    </div>
+</div>
