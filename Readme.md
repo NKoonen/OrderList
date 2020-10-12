@@ -7,6 +7,6 @@ The selected favorite products will then be visible in the customer account wher
 
 This module is compatible with the multistore, but there products will be mixed between stores.
 
-##Contribute
+## Contribute
 This module is free to use, and feel free to edit/update the module with your own branch or pull request.
 Donations are always very welcome [here](https://www.paypal.com/paypalme/buymecoffee)
