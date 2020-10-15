@@ -116,10 +116,15 @@ class Orderlist extends Module implements WidgetInterface
         //$this->context->controller->addCSS($this->_path.'/views/css/front.css');
     }
 
+    public function getListPageUrl()
+    {
+    	return Context::getContext()->link->getModuleLink($this->name, 'my_list');
+    }
+
 	public function getWidgetVariables($hookName, array $params)
 	{
 		return array(
-			'my_list' => Context::getContext()->link->getModuleLink($this->name, 'my_list'),
+			'my_list' => $this->getListPageUrl(),
 		);
 	}
 
@@ -137,6 +142,8 @@ class Orderlist extends Module implements WidgetInterface
 
     public function hookDisplayProductAdditionalInfo($params)
     {
+	    $this->smarty->assign($this->getWidgetVariables('displayCustomerAccount', array()));
+
         $product = $params['product'];
         $this->context->smarty->assign($this->name, Configuration::get('orderlist'));
 
