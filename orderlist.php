@@ -38,7 +38,7 @@ class Orderlist extends Module implements WidgetInterface
     {
         $this->name = 'orderlist';
         $this->tab = 'front_office_features';
-        $this->version = '1.0.0';
+        $this->version = '1.0.1';
         $this->author = 'Inform-All';
         $this->need_instance = 1;
 
