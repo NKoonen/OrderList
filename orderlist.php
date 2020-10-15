@@ -28,7 +28,9 @@ if (!defined('_PS_VERSION_')) {
     exit;
 }
 
-class Orderlist extends Module
+use PrestaShop\PrestaShop\Core\Module\WidgetInterface;
+
+class Orderlist extends Module implements WidgetInterface
 {
     protected $config_form = false;
 
@@ -110,23 +112,38 @@ class Orderlist extends Module
      */
     public function hookHeader()
     {
-        $this->context->controller->addJS($this->_path.'/views/js/front.js');
-        $this->context->controller->addCSS($this->_path.'/views/css/front.css');
+        //$this->context->controller->addJS($this->_path.'/views/js/front.js');
+        //$this->context->controller->addCSS($this->_path.'/views/css/front.css');
     }
+
+    public function getListPageUrl()
+    {
+    	return Context::getContext()->link->getModuleLink($this->name, 'my_list');
+    }
+
+	public function getWidgetVariables($hookName, array $params)
+	{
+		return array(
+			'my_list_url' => $this->getListPageUrl(),
+		);
+	}
+
+	public function renderWidget($hookName, array $params)
+	{
+		$this->smarty->assign($this->getWidgetVariables($hookName, $params));
+		return $this->display(dirname(__FILE__), '/views/templates/hook/go_to_orderlist_widget.tpl');
+	}
 
     public function hookDisplayCustomerAccount()
     {
-        $this->context->smarty->assign(
-            [
-                'my_list' => Context::getContext()->link->getModuleLink($this->name, 'my_list'),
-            ]
-        );
-
+	    $this->smarty->assign($this->getWidgetVariables('displayCustomerAccount', array()));
         return $this->display(dirname(__FILE__), '/views/templates/hook/go_to_orderlist.tpl');
     }
 
     public function hookDisplayProductAdditionalInfo($params)
     {
+	    $this->smarty->assign($this->getWidgetVariables('displayCustomerAccount', array()));
+
         $product = $params['product'];
         $this->context->smarty->assign($this->name, Configuration::get('orderlist'));
 
