@@ -124,7 +124,7 @@ class Orderlist extends Module implements WidgetInterface
 	public function getWidgetVariables($hookName, array $params)
 	{
 		return array(
-			'my_list' => $this->getListPageUrl(),
+			'my_list_url' => $this->getListPageUrl(),
 		);
 	}
 
