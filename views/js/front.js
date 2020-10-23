@@ -25,3 +25,44 @@
 * Don't forget to prefix your containers with your own identifier
 * to avoid any conflicts with others containers.
 */
+
+jQuery( function( $ ) {
+
+	$(document).on( 'click touchend', '.orderlist a.add-to-orderlist', function (e) {
+		e.preventDefault();
+		e.stopPropagation();
+
+		var $this      = $( this ),
+			$container = $this.parents( '.orderlist'),
+			href       = $this.attr('href');
+
+		if ( href.split('?')[1] ) {
+			href += '&ajax=1';
+		} else {
+			href += '?ajax=1';
+		}
+
+		// @todo Loading icon.
+		$this.css( {'opacity': '0.5', 'cursor': 'wait'} );
+
+		$.ajax({
+			type: 'GET',
+			url: href,
+			headers: {"cache-control": "no-cache"},
+			//async: true,
+			dataType: 'json',
+			success: function ( resp ) {
+				if ( resp.hasOwnProperty( 'success' ) && resp.success ) {
+					$container.replaceWith( resp.content );
+				} else {
+					// FAIL!
+				}
+			}
+		}).always(function () {
+			$this.css( {'opacity': '', 'cursor': ''} );
+		}).fail(function(resp) {
+			// FAIL!
+		});
+	} )
+
+} );
