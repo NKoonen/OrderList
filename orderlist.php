@@ -112,8 +112,8 @@ class Orderlist extends Module implements WidgetInterface
      */
     public function hookHeader()
     {
-        //$this->context->controller->addJS($this->_path.'/views/js/front.js');
-        //$this->context->controller->addCSS($this->_path.'/views/css/front.css');
+        $this->context->controller->addJS($this->_path.'/views/js/front.js');
+        $this->context->controller->addCSS($this->_path.'/views/css/front.css');
     }
 
     public function getListPageUrl()
@@ -144,7 +144,11 @@ class Orderlist extends Module implements WidgetInterface
     {
 	    $this->smarty->assign($this->getWidgetVariables('displayCustomerAccount', array()));
 
-        $product = $params['product'];
+        $product_id = $params['product'];
+        if ( is_object( $product_id ) ) {
+        	$product_id = $product_id->getId();
+        }
+
         $this->context->smarty->assign($this->name, Configuration::get('orderlist'));
 
         $this->context->smarty->assign(
@@ -152,14 +156,14 @@ class Orderlist extends Module implements WidgetInterface
             Context::getContext()->link->getModuleLink(
                 $this->name,
                 'edit_list_product',
-                array('product_id' => (int)$product->getId())
+                array('product_id' => (int) $product_id)
             )
         );
 
-        if ($this->context->customer->id) {
+        if ( $this->context->customer->isLogged() ) {
             $this->context->smarty->assign(
                 'alreadyInAList',
-                $this->alreadyInList($product->getId(), $this->context->customer->id)
+                $this->alreadyInList( $product_id, $this->context->customer->id )
             );
 
             return $this->display(__FILE__, 'views/templates/hook/add_to_orderlist.tpl');
@@ -171,12 +175,19 @@ class Orderlist extends Module implements WidgetInterface
 
     public function alreadyInList($product_id, $customer_id)
     {
+    	static $cache = array();
+    	if ( ! empty( $cache[ $product_id . '_' . $customer_id ] ) ) {
+    		return ! empty( $cache[ $product_id . '_' . $customer_id ] );
+	    }
+
         $sql = new DbQuery();
         $sql->select('*');
         $sql->from('orderlist', 'ol');
         $sql->where('ol.id_customer = '.(int)$customer_id);
         $sql->where('ol.id_product = '.(int)$product_id);
 
-        return empty(Db::getInstance()->executeS($sql));
+	    $cache[ $product_id . '_' . $customer_id ] = Db::getInstance()->executeS($sql);
+
+        return ! empty( $cache[ $product_id . '_' . $customer_id ] );
     }
 }
