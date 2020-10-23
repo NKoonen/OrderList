@@ -112,8 +112,8 @@ class Orderlist extends Module implements WidgetInterface
      */
     public function hookHeader()
     {
-        //$this->context->controller->addJS($this->_path.'/views/js/front.js');
-        //$this->context->controller->addCSS($this->_path.'/views/css/front.css');
+        $this->context->controller->addJS($this->_path.'/views/js/front.js');
+        $this->context->controller->addCSS($this->_path.'/views/css/front.css');
     }
 
     public function getListPageUrl()

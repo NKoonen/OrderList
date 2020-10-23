@@ -25,3 +25,24 @@
 * Don't forget to prefix your containers with your own identifier
 * to avoid any conflicts with others containers.
 */
+
+.orderlist .product-miniature .thumbnail-container {
+	height: auto;
+}
+.orderlist .product-miniature .thumbnail-container .product-thumbnail {
+	position: relative;
+	height: 0;
+	overflow: hidden;
+	padding-bottom: 100%;
+}
+.orderlist .product-miniature .thumbnail-container .product-description {
+	position: relative;
+	height: auto;
+	min-height: 100px;
+}
+.orderlist .product-miniature .thumbnail-container .remove {
+	position: absolute;
+	top: 0;
+	right: 0;
+	color: #000;
+}
