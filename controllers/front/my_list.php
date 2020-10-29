@@ -26,6 +26,15 @@ class orderlistmy_listModuleFrontController extends ModuleFrontController
         $this->setTemplate('module:orderlist/views/templates/front/my_orderlist.tpl');
     }
 
+	protected function getBreadcrumbLinks()
+	{
+		$breadcrumb = parent::getBreadcrumbLinks();
+
+		$breadcrumb['links'][] = $this->addMyAccountToBreadcrumb();
+
+		return $breadcrumb;
+	}
+
     public function myList($customer_id)
     {
         $sql = new DbQuery();

@@ -5,7 +5,7 @@
 {/block}
 
 {block name='page_content'}
-    <div class="orderlist container">
+    <div class="orderlist">
         <div class="products row mb-3">
             {foreach $products as $product}
                 {include file='module:orderlist/views/templates/front/_partials/miniatures/product.tpl' product=$product}
