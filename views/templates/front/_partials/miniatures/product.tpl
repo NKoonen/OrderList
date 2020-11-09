@@ -9,7 +9,7 @@
 {/block}
 
 {block name='product_price_and_shipping' append}
-    {if $product.show_price}
+    {if !$configuration.is_catalog && $product.show_price}
 	    <div class="m-2">
 		    <form action="{$urls.pages.cart}" method="post">
 			    <input type="hidden" name="token" value="{$static_token}">
