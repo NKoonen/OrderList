@@ -130,15 +130,21 @@ class Orderlist extends Module implements WidgetInterface
 
 	public function renderWidget($hookName, array $params)
 	{
+		if ( ! $this->context->customer->isLogged() ) {
+			return '';
+		}
 		$this->smarty->assign($this->getWidgetVariables($hookName, $params));
 		return $this->display(dirname(__FILE__), '/views/templates/hook/go_to_orderlist_widget.tpl');
 	}
 
-    public function hookDisplayCustomerAccount()
-    {
-	    $this->smarty->assign($this->getWidgetVariables('displayCustomerAccount', array()));
-        return $this->display(dirname(__FILE__), '/views/templates/hook/go_to_orderlist.tpl');
-    }
+	public function hookDisplayCustomerAccount()
+	{
+		if ( ! $this->context->customer->isLogged() ) {
+			return '';
+		}
+		$this->smarty->assign($this->getWidgetVariables('displayCustomerAccount', array()));
+		return $this->display(dirname(__FILE__), '/views/templates/hook/go_to_orderlist.tpl');
+	}
 
     public function hookDisplayProductAdditionalInfo($params)
     {
