@@ -25,101 +25,101 @@
  */
 
 if (!defined('_PS_VERSION_')) {
-    exit;
+	exit;
 }
 
 use PrestaShop\PrestaShop\Core\Module\WidgetInterface;
 
 class Orderlist extends Module implements WidgetInterface
 {
-    protected $config_form = false;
+	protected $config_form = false;
 
-    public function __construct()
-    {
-        $this->name = 'orderlist';
-        $this->tab = 'front_office_features';
-        $this->version = '1.0.1';
-        $this->author = 'Inform-All';
-        $this->need_instance = 1;
+	public function __construct()
+	{
+		$this->name = 'orderlist';
+		$this->tab = 'front_office_features';
+		$this->version = '1.0.0';
+		$this->author = 'Inform-All';
+		$this->need_instance = 1;
 
-        /**
-         * Set $this->bootstrap to true if your module is compliant with bootstrap (PrestaShop 1.6)
-         */
-        $this->bootstrap = true;
+		/**
+		 * Set $this->bootstrap to true if your module is compliant with bootstrap (PrestaShop 1.6)
+		 */
+		$this->bootstrap = true;
 
-        parent::__construct();
+		parent::__construct();
 
-        $this->displayName = $this->l('Order List');
-        $this->description = $this->l('Customers can make a list of their favorite products and re-order them.');
+		$this->displayName = $this->l('Order List');
+		$this->description = $this->l('Customers can make a list of their favorite products and re-order them.');
 
-        $this->confirmUninstall = $this->l(
-            'Are you sure you want to uninstall and delete all the existing order lists?'
-        );
+		$this->confirmUninstall = $this->l(
+			'Are you sure you want to uninstall and delete all the existing order lists?'
+		);
 
-        $this->ps_versions_compliancy = array('min' => '1.7', 'max' => _PS_VERSION_);
-    }
+		$this->ps_versions_compliancy = array('min' => '1.7', 'max' => _PS_VERSION_);
+	}
 
-    /**
-     * Don't forget to create update methods if needed:
-     * http://doc.prestashop.com/display/PS16/Enabling+the+Auto-Update
-     */
-    public function install()
-    {
-        Configuration::updateValue('ORDERLIST_LIVE_MODE', false);
+	/**
+	 * Don't forget to create update methods if needed:
+	 * http://doc.prestashop.com/display/PS16/Enabling+the+Auto-Update
+	 */
+	public function install()
+	{
+		Configuration::updateValue('ORDERLIST_LIVE_MODE', false);
 
-        include(dirname(__FILE__).'/sql/install.php');
+		include(dirname(__FILE__).'/sql/install.php');
 
-        return parent::install() &&
-            $this->registerHook('header') &&
-            $this->registerHook('backOfficeHeader') &&
-            $this->registerHook('displayCustomerAccount') &&
-            $this->registerHook('displayProductAdditionalInfo');
-    }
+		return parent::install() &&
+			$this->registerHook('header') &&
+			$this->registerHook('backOfficeHeader') &&
+			$this->registerHook('displayCustomerAccount') &&
+			$this->registerHook('displayProductAdditionalInfo');
+	}
 
-    public function uninstall()
-    {
-        Configuration::deleteByName('ORDERLIST_LIVE_MODE');
+	public function uninstall()
+	{
+		Configuration::deleteByName('ORDERLIST_LIVE_MODE');
 
-        include(dirname(__FILE__).'/sql/uninstall.php');
+		include(dirname(__FILE__).'/sql/uninstall.php');
 
-        return parent::uninstall();
-    }
+		return parent::uninstall();
+	}
 
-    /**
-     * Load the configuration form
-     */
-    public function getContent()
-    {
-        $this->context->smarty->assign('module_dir', $this->_path);
+	/**
+	 * Load the configuration form
+	 */
+	public function getContent()
+	{
+		$this->context->smarty->assign('module_dir', $this->_path);
 
-        return $this->display(__FILE__, 'views/templates/admin/configure.tpl');
+		return $this->display(__FILE__, 'views/templates/admin/configure.tpl');
 
-    }
+	}
 
-    /**
-     * Add the CSS & JavaScript files you want to be loaded in the BO.
-     */
-    public function hookBackOfficeHeader()
-    {
-        if (Tools::getValue('module_name') == $this->name) {
-            $this->context->controller->addJS($this->_path.'views/js/back.js');
-            $this->context->controller->addCSS($this->_path.'views/css/back.css');
-        }
-    }
+	/**
+	 * Add the CSS & JavaScript files you want to be loaded in the BO.
+	 */
+	public function hookBackOfficeHeader()
+	{
+		if (Tools::getValue('module_name') == $this->name) {
+			$this->context->controller->addJS($this->_path.'views/js/back.js');
+			$this->context->controller->addCSS($this->_path.'views/css/back.css');
+		}
+	}
 
-    /**
-     * Add the CSS & JavaScript files you want to be added on the FO.
-     */
-    public function hookHeader()
-    {
-        $this->context->controller->addJS($this->_path.'/views/js/front.js');
-        $this->context->controller->addCSS($this->_path.'/views/css/front.css');
-    }
+	/**
+	 * Add the CSS & JavaScript files you want to be added on the FO.
+	 */
+	public function hookHeader()
+	{
+		$this->context->controller->addJS($this->_path.'/views/js/front.js');
+		$this->context->controller->addCSS($this->_path.'/views/css/front.css');
+	}
 
-    public function getListPageUrl()
-    {
-    	return Context::getContext()->link->getModuleLink($this->name, 'my_list');
-    }
+	public function getListPageUrl()
+	{
+		return Context::getContext()->link->getModuleLink($this->name, 'my_list');
+	}
 
 	public function getWidgetVariables($hookName, array $params)
 	{
@@ -146,54 +146,54 @@ class Orderlist extends Module implements WidgetInterface
 		return $this->display(dirname(__FILE__), '/views/templates/hook/go_to_orderlist.tpl');
 	}
 
-    public function hookDisplayProductAdditionalInfo($params)
-    {
-	    $this->smarty->assign($this->getWidgetVariables('displayCustomerAccount', array()));
+	public function hookDisplayProductAdditionalInfo($params)
+	{
+		$this->smarty->assign($this->getWidgetVariables('displayCustomerAccount', array()));
 
-        $product_id = $params['product'];
-        if ( is_object( $product_id ) ) {
-        	$product_id = $product_id->getId();
-        }
+		$product_id = $params['product'];
+		if ( is_object( $product_id ) ) {
+			$product_id = $product_id->getId();
+		}
 
-        $this->context->smarty->assign($this->name, Configuration::get('orderlist'));
+		$this->context->smarty->assign($this->name, Configuration::get('orderlist'));
 
-        $this->context->smarty->assign(
-            'add_product_link',
-            Context::getContext()->link->getModuleLink(
-                $this->name,
-                'edit_list_product',
-                array('product_id' => (int) $product_id)
-            )
-        );
+		$this->context->smarty->assign(
+			'add_product_link',
+			Context::getContext()->link->getModuleLink(
+				$this->name,
+				'edit_list_product',
+				array('product_id' => (int) $product_id)
+			)
+		);
 
-        if ( $this->context->customer->isLogged() ) {
-            $this->context->smarty->assign(
-                'alreadyInAList',
-                $this->alreadyInList( $product_id, $this->context->customer->id )
-            );
+		if ( $this->context->customer->isLogged() ) {
+			$this->context->smarty->assign(
+				'alreadyInAList',
+				$this->alreadyInList( $product_id, $this->context->customer->id )
+			);
 
-            return $this->display(__FILE__, 'views/templates/hook/add_to_orderlist.tpl');
-        } else {
-            return $this->display(__FILE__, 'views/templates/hook/login_for_orderlist.tpl');
-        }
+			return $this->display(__FILE__, 'views/templates/hook/add_to_orderlist.tpl');
+		} else {
+			return $this->display(__FILE__, 'views/templates/hook/login_for_orderlist.tpl');
+		}
 
-    }
+	}
 
-    public function alreadyInList($product_id, $customer_id)
-    {
-    	static $cache = array();
-    	if ( ! empty( $cache[ $product_id . '_' . $customer_id ] ) ) {
-    		return ! empty( $cache[ $product_id . '_' . $customer_id ] );
-	    }
+	public function alreadyInList($product_id, $customer_id)
+	{
+		static $cache = array();
+		if ( ! empty( $cache[ $product_id . '_' . $customer_id ] ) ) {
+			return ! empty( $cache[ $product_id . '_' . $customer_id ] );
+		}
 
-        $sql = new DbQuery();
-        $sql->select('*');
-        $sql->from('orderlist', 'ol');
-        $sql->where('ol.id_customer = '.(int)$customer_id);
-        $sql->where('ol.id_product = '.(int)$product_id);
+		$sql = new DbQuery();
+		$sql->select('*');
+		$sql->from('orderlist', 'ol');
+		$sql->where('ol.id_customer = '.(int)$customer_id);
+		$sql->where('ol.id_product = '.(int)$product_id);
 
-	    $cache[ $product_id . '_' . $customer_id ] = Db::getInstance()->executeS($sql);
+		$cache[ $product_id . '_' . $customer_id ] = Db::getInstance()->executeS($sql);
 
-        return ! empty( $cache[ $product_id . '_' . $customer_id ] );
-    }
+		return ! empty( $cache[ $product_id . '_' . $customer_id ] );
+	}
 }
